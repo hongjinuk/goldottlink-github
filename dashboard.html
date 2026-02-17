@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드 - goldottlink</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="dashboard.html" class="active">대시보드</a></li>
+                <li><a href="viewer.html">링크 뷰어</a></li>
+                <li><a href="app.html">앱 사용</a></li>
+                <li><a href="index.html">메인으로</a></li>
+                <li><a href="#" id="logoutBtn" class="btn-login">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero-section">
+            <h1>📊 대시보드</h1>
+            <p id="welcomeMessage">환영합니다!</p>
+        </section>
+
+        <!-- 통계 카드 -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🔗</div>
+                    <div class="stat-content">
+                        <h3>전체 링크</h3>
+                        <p class="stat-number" id="totalLinks">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📁</div>
+                    <div class="stat-content">
+                        <h3>폴더 수</h3>
+                        <p class="stat-number" id="totalFolders">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-content">
+                        <h3>최근 추가</h3>
+                        <p class="stat-number" id="recentLinks">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">☁️</div>
+                    <div class="stat-content">
+                        <h3>클라우드 백업</h3>
+                        <p class="stat-number" id="backupStatus">-</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 빠른 액션 -->
+        <section class="quick-actions">
+            <h2>⚡ 빠른 작업</h2>
+            <div class="action-grid">
+                <button class="action-card" onclick="alert('앱에서 이용 가능한 기능입니다')">
+                    <div class="action-icon">➕</div>
+                    <h3>링크 추가</h3>
+                    <p>새로운 OTT 링크를 추가하세요</p>
+                </button>
+
+                <button class="action-card" onclick="alert('앱에서 이용 가능한 기능입니다')">
+                    <div class="action-icon">📁</div>
+                    <h3>폴더 생성</h3>
+                    <p>링크를 정리할 폴더를 만드세요</p>
+                </button>
+
+                <button class="action-card" onclick="alert('앱에서 이용 가능한 기능입니다')">
+                    <div class="action-icon">💾</div>
+                    <h3>백업 생성</h3>
+                    <p>데이터를 백업하세요</p>
+                </button>
+
+                <button class="action-card" onclick="window.location.href='viewer.html'">
+                    <div class="action-icon">👁️</div>
+                    <h3>링크 보기</h3>
+                    <p>저장된 링크를 확인하세요</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- 최근 활동 -->
+        <section class="recent-activity">
+            <h2>📝 최근 활동</h2>
+            <div class="activity-list" id="activityList">
+                <p style="text-align: center; color: #666; padding: 2rem;">
+                    아직 활동 내역이 없습니다.<br>
+                    앱을 사용하여 링크를 추가해보세요!
+                </p>
+            </div>
+        </section>
+
+        <!-- 플랫폼별 통계 -->
+        <section class="platform-stats">
+            <h2>🎬 플랫폼별 링크 분포</h2>
+            <div class="charts-grid">
+                <!-- 차트 1: 플랫폼별 파이 차트 -->
+                <div class="chart-container">
+                    <h3>플랫폼 분포</h3>
+                    <canvas id="platformPieChart"></canvas>
+                </div>
+
+                <!-- 차트 2: 월별 링크 추가 추이 -->
+                <div class="chart-container">
+                    <h3>월별 링크 추가</h3>
+                    <canvas id="monthlyLineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 차트 3: 플랫폼별 막대 그래프 -->
+            <div class="chart-container-full">
+                <h3>플랫폼별 상세 통계</h3>
+                <canvas id="platformBarChart"></canvas>
+            </div>
+        </section>
+
+        <!-- 정보 섹션 -->
+        <section class="info-banner">
+            <h3>📱 모바일 앱을 다운로드하세요</h3>
+            <p>더 많은 기능을 모바일 앱에서 이용하실 수 있습니다.</p>
+            <div style="margin-top: 1rem;">
+                <a href="index.html#download" class="btn btn-primary">다운로드</a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
+        <p>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="contact.html">문의하기</a>
+        </p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // 모드 확인 (로컬 또는 계정)
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode') || 'account';
+        
+        document.getElementById('welcomeMessage').textContent = 
+            mode === 'local' ? '로컬 모드로 사용 중입니다' : '환영합니다!';
+        
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('로그아웃 하시겠습니까?')) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // 데모 데이터
+        const demoStats = {
+            youtube: 45,
+            netflix: 32,
+            wavve: 18,
+            disney: 25,
+            tving: 20,
+            watcha: 15,
+            etc: 10
+        };
+
+        const totalLinks = Object.values(demoStats).reduce((a, b) => a + b, 0);
+        
+        document.getElementById('totalLinks').textContent = totalLinks;
+        document.getElementById('totalFolders').textContent = '12';
+        document.getElementById('recentLinks').textContent = '8';
+        document.getElementById('backupStatus').textContent = mode === 'local' ? '미사용' : '3개';
+
+        // Chart.js 차트 생성
+        // 1. 플랫폼별 파이 차트
+        const platformPieCtx = document.getElementById('platformPieChart').getContext('2d');
+        const platformPieChart = new Chart(platformPieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['YouTube', 'Netflix', 'Disney+', 'Tving', 'Wavve', 'Watcha', '기타'],
+                datasets: [{
+                    label: '링크 수',
+                    data: [
+                        demoStats.youtube,
+                        demoStats.netflix,
+                        demoStats.disney,
+                        demoStats.tving,
+                        demoStats.wavve,
+                        demoStats.watcha,
+                        demoStats.etc
+                    ],
+                    backgroundColor: [
+                        '#FF0000',  // YouTube red
+                        '#E50914',  // Netflix red
+                        '#113CCF',  // Disney+ blue
+                        '#FF153C',  // Tving red
+                        '#1EAFED',  // Wavve blue
+                        '#FF0558',  // Watcha pink
+                        '#95A5A6'   // 기타 gray
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return label + ': ' + value + '개 (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. 월별 링크 추가 추이 (라인 차트)
+        const monthlyLineCtx = document.getElementById('monthlyLineChart').getContext('2d');
+        const monthlyLineChart = new Chart(monthlyLineCtx, {
+            type: 'line',
+            data: {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                datasets: [{
+                    label: '추가된 링크',
+                    data: [12, 19, 25, 32, 28, 35],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#667eea',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. 플랫폼별 막대 그래프
+        const platformBarCtx = document.getElementById('platformBarChart').getContext('2d');
+        const platformBarChart = new Chart(platformBarCtx, {
+            type: 'bar',
+            data: {
+                labels: ['YouTube', 'Netflix', 'Disney+', 'Tving', 'Wavve', 'Watcha', '기타'],
+                datasets: [{
+                    label: '저장된 링크',
+                    data: [
+                        demoStats.youtube,
+                        demoStats.netflix,
+                        demoStats.disney,
+                        demoStats.tving,
+                        demoStats.wavve,
+                        demoStats.watcha,
+                        demoStats.etc
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 0.8)',
+                        'rgba(229, 9, 20, 0.8)',
+                        'rgba(17, 60, 207, 0.8)',
+                        'rgba(255, 21, 60, 0.8)',
+                        'rgba(30, 175, 237, 0.8)',
+                        'rgba(255, 5, 88, 0.8)',
+                        'rgba(149, 165, 166, 0.8)'
+                    ],
+                    borderColor: [
+                        '#FF0000',
+                        '#E50914',
+                        '#113CCF',
+                        '#FF153C',
+                        '#1EAFED',
+                        '#FF0558',
+                        '#95A5A6'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + '개의 링크';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <style>
+        .stats-section {
+            margin: 2rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+        }
+
+        .stat-content h3 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .quick-actions, .recent-activity, .platform-stats {
+            margin: 3rem 0;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .activity-list {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-height: 200px;
+        }
+
+        .platform-chart {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .chart-container h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .chart-container-full {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .chart-container-full h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .chart-container canvas,
+        .chart-container-full canvas {
+            max-height: 300px;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bar-label {
+            min-width: 100px;
+            font-weight: 500;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .bar-value {
+            min-width: 40px;
+            text-align: right;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .info-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .info-banner h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+    </style>
+</body>
+</html>

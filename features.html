@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기능 소개 - goldottlink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="features.html" class="active">기능</a></li>
+                <li><a href="guide.html">가이드</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">문의</a></li>
+                <li><a href="login.html" class="btn-login">로그인</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero-section">
+            <h1>✨ goldottlink의 강력한 기능</h1>
+            <p>모든 OTT 링크를 한 곳에서 체계적으로 관리하세요</p>
+        </section>
+
+        <!-- 핵심 기능 -->
+        <section class="features-section">
+            <h2>🎯 핵심 기능</h2>
+            
+            <div class="feature-detail">
+                <div class="feature-icon">📱</div>
+                <div class="feature-content">
+                    <h3>멀티 플랫폼 지원</h3>
+                    <p>Android와 iOS 모두에서 사용 가능한 크로스 플랫폼 앱입니다. Flutter 기반으로 개발되어 양쪽 플랫폼에서 동일한 사용자 경험을 제공합니다.</p>
+                    <ul>
+                        <li>Android 6.0 이상</li>
+                        <li>iOS 12.0 이상</li>
+                        <li>통일된 UI/UX</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-icon">🗂️</div>
+                <div class="feature-content">
+                    <h3>계층적 폴더 구조</h3>
+                    <p>큰 주제 → 작은 주제 → 링크로 이어지는 3단계 계층 구조로 체계적으로 정리할 수 있습니다.</p>
+                    <ul>
+                        <li>무제한 폴더 생성</li>
+                        <li>드래그 앤 드롭 지원</li>
+                        <li>폴더별 색상 및 아이콘</li>
+                        <li>빠른 검색 및 필터링</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-content">
+                    <h3>다양한 뷰 모드</h3>
+                    <p>자신의 선호에 맞는 뷰 모드로 링크를 관리하세요.</p>
+                    <ul>
+                        <li><strong>플림 모드</strong>: 카드형 스와이프 뷰로 시각적 탐색</li>
+                        <li><strong>일반 모드</strong>: 리스트 형식으로 빠른 접근</li>
+                        <li><strong>폴드 모드</strong>: 트리 구조로 계층적 탐색</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-icon">🌐</div>
+                <div class="feature-content">
+                    <h3>링크 열기 모드</h3>
+                    <p>링크를 여는 방식을 선택할 수 있습니다.</p>
+                    <ul>
+                        <li><strong>인앱 브라우저</strong>: 앱 내에서 바로 콘텐츠 시청</li>
+                        <li><strong>팝업 모드</strong>: 간단한 팝업으로 빠른 확인</li>
+                        <li><strong>외부 브라우저</strong>: 기본 브라우저로 열기</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 데이터 관리 -->
+        <section class="features-section">
+            <h2>📊 데이터 관리</h2>
+            
+            <div class="feature-detail">
+                <div class="feature-icon">📁</div>
+                <div class="feature-content">
+                    <h3>Excel/CSV 임포트/익스포트</h3>
+                    <p>대량의 링크를 한 번에 가져오거나 내보낼 수 있습니다.</p>
+                    <ul>
+                        <li>Excel (.xlsx) 파일 지원</li>
+                        <li>CSV 파일 지원</li>
+                        <li>자동 폴더 생성</li>
+                        <li>데이터 검증 및 오류 처리</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-icon">☁️</div>
+                <div class="feature-content">
+                    <h3>클라우드 동기화</h3>
+                    <p>Firebase 기반 클라우드 백업으로 여러 기기에서 데이터를 동기화하세요.</p>
+                    <ul>
+                        <li>자동 클라우드 백업</li>
+                        <li>여러 기기 간 동기화</li>
+                        <li>데이터 복원 기능</li>
+                        <li>백업 이력 관리</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-icon">💾</div>
+                <div class="feature-content">
+                    <h3>로컬 백업</h3>
+                    <p>기기에 직접 백업 파일을 저장하고 복원할 수 있습니다.</p>
+                    <ul>
+                        <li>JSON 형식 백업</li>
+                        <li>수동 백업 생성</li>
+                        <li>빠른 복원</li>
+                        <li>인터넷 연결 불필요</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 보안 기능 -->
+        <section class="features-section">
+            <h2>🔒 보안 기능</h2>
+            
+            <div class="feature-detail">
+                <div class="feature-icon">🔐</div>
+                <div class="feature-content">
+                    <h3>AES-256 암호화</h3>
+                    <p>군사급 암호화로 데이터를 안전하게 보호합니다.</p>
+                    <ul>
+                        <li>로컬 데이터 암호화</li>
+                        <li>AES-256 알고리즘</li>
+                        <li>안전한 키 관리</li>
+                        <li>자동 암호화/복호화</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-icon">👆</div>
+                <div class="feature-content">
+                    <h3>생체 인증</h3>
+                    <p>지문이나 얼굴 인식으로 앱을 보호하세요.</p>
+                    <ul>
+                        <li>지문 인식 지원</li>
+                        <li>얼굴 인식 지원 (Face ID)</li>
+                        <li>앱 잠금 기능</li>
+                        <li>빠르고 안전한 인증</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 공유 기능 -->
+        <section class="features-section">
+            <h2>🚀 공유 기능</h2>
+            
+            <div class="feature-detail">
+                <div class="feature-icon">📱</div>
+                <div class="feature-content">
+                    <h3>QR 코드 생성</h3>
+                    <p>링크를 QR 코드로 변환하여 쉽게 공유하세요.</p>
+                    <ul>
+                        <li>개별 링크 QR 코드</li>
+                        <li>폴더 QR 코드</li>
+                        <li>고해상도 이미지 생성</li>
+                        <li>카메라로 즉시 스캔</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-icon">🔗</div>
+                <div class="feature-content">
+                    <h3>링크 공유</h3>
+                    <p>다양한 방법으로 링크를 공유할 수 있습니다.</p>
+                    <ul>
+                        <li>링크 복사</li>
+                        <li>소셜 미디어 공유</li>
+                        <li>이메일 공유</li>
+                        <li>메시지 공유</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 검색 및 필터 -->
+        <section class="features-section">
+            <h2>🔍 검색 및 필터</h2>
+            
+            <div class="feature-detail">
+                <div class="feature-icon">🔎</div>
+                <div class="feature-content">
+                    <h3>강력한 검색 기능</h3>
+                    <p>원하는 링크를 빠르게 찾을 수 있습니다.</p>
+                    <ul>
+                        <li>키워드 검색 (제목, 설명, URL)</li>
+                        <li>태그 기반 필터링</li>
+                        <li>OTT 플랫폼별 필터</li>
+                        <li>날짜 범위 필터</li>
+                        <li>실시간 검색 결과</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- OTT 플랫폼 지원 -->
+        <section class="features-section">
+            <h2>🎬 지원하는 OTT 플랫폼</h2>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <span class="platform-icon">📺</span>
+                    <h4>유튜브</h4>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">🎥</span>
+                    <h4>넷플릭스</h4>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">🎭</span>
+                    <h4>왓챠</h4>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">🛍️</span>
+                    <h4>쿠팡플레이</h4>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">🎵</span>
+                    <h4>티빙</h4>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">🎬</span>
+                    <h4>웨이브</h4>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">📱</span>
+                    <h4>디즈니+</h4>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">🌟</span>
+                    <h4>기타</h4>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>지금 바로 시작하세요!</h2>
+            <p>goldottlink로 OTT 링크를 체계적으로 관리해보세요</p>
+            <div class="cta-buttons">
+                <a href="index.html#download" class="btn btn-primary">다운로드</a>
+                <a href="guide.html" class="btn btn-secondary">사용 가이드 보기</a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
+        <p>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="contact.html">문의하기</a>
+        </p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 - goldottlink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="features.html">기능</a></li>
+                <li><a href="guide.html">가이드</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html" class="active">문의</a></li>
+                <li><a href="login.html" class="btn-login">로그인</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero-section">
+            <h1>💬 문의하기</h1>
+            <p>궁금한 점이나 문제가 있으시면 언제든 연락주세요</p>
+        </section>
+
+        <div class="form-container">
+            <h2>문의 폼</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">이름 *</label>
+                    <input type="text" id="name" name="name" required placeholder="이름을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">이메일 *</label>
+                    <input type="email" id="email" name="email" required placeholder="example@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">문의 유형 *</label>
+                    <select id="category" name="category" required>
+                        <option value="">선택하세요</option>
+                        <option value="general">일반 문의</option>
+                        <option value="bug">버그 신고</option>
+                        <option value="feature">기능 제안</option>
+                        <option value="account">계정 문제</option>
+                        <option value="technical">기술 지원</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">제목 *</label>
+                    <input type="text" id="subject" name="subject" required placeholder="문의 제목을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">문의 내용 *</label>
+                    <textarea id="message" name="message" required placeholder="문의 내용을 상세히 작성해주세요"></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">문의하기</button>
+            </form>
+        </div>
+
+        <section class="contact-info">
+            <h2>📞 연락처 정보</h2>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>📧 이메일</h3>
+                    <p><a href="mailto:support@goldottlink.com">support@goldottlink.com</a></p>
+                    <p class="text-muted">평일 09:00 - 18:00 (KST)</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🐙 GitHub</h3>
+                    <p><a href="https://github.com/AI-Work-Project/goldottlink" target="_blank">AI-Work-Project/goldottlink</a></p>
+                    <p class="text-muted">이슈 등록 및 기여</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>📱 소셜 미디어</h3>
+                    <p>준비 중입니다</p>
+                    <p class="text-muted">곧 업데이트 예정</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-cta">
+            <h2>자주 묻는 질문을 먼저 확인해보세요</h2>
+            <p>대부분의 질문에 대한 답변을 FAQ에서 찾으실 수 있습니다.</p>
+            <a href="faq.html" class="btn btn-primary">FAQ 보기</a>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
+        <p>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="contact.html">문의하기</a>
+        </p>
+    </footer>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:8080' 
+            : 'https://api.goldottlink.com';
+        
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                category: document.getElementById('category').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // 제출 버튼 비활성화
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '전송 중...';
+            
+            try {
+                // Backend API로 전송
+                const apiUrl = `${API_BASE_URL}/api/contact`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    // 성공 메시지
+                    alert('✅ 문의가 접수되었습니다!\n\n다음 정보로 답변 메일이 발송됩니다:\n📧 ' + formData.email + '\n\n빠른 시일 내에 답변드리겠습니다.\n감사합니다!');
+                    
+                    // 폼 초기화
+                    this.reset();
+                } else {
+                    throw new Error(result.error || 'Failed to send message');
+                }
+                
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('❌ 전송 중 오류가 발생했습니다.\n' + 
+                      '서버가 실행 중인지 확인해주세요 (http://localhost:8080)\n' +
+                      '또는 나중에 다시 시도해주세요.');
+            } finally {
+                // 버튼 원상복구
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <style>
+        .contact-info {
+            margin: 3rem 0;
+        }
+
+        .contact-info h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #667eea;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .feature-card a:hover {
+            text-decoration: underline;
+        }
+
+        .text-muted {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .faq-cta {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin: 3rem 0;
+        }
+
+        .faq-cta h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .faq-cta .btn {
+            margin-top: 1.5rem;
+        }
+    </style>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

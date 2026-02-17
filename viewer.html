@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>링크 뷰어 - goldottlink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="dashboard.html">대시보드</a></li>
+                <li><a href="viewer.html" class="active">링크 뷰어</a></li>
+                <li><a href="app.html">앱 사용</a></li>
+                <li><a href="index.html">메인으로</a></li>
+                <li><a href="#" id="logoutBtn" class="btn-login">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero-section">
+            <h1>👁️ 웹 링크 뷰어</h1>
+            <p>저장된 링크를 웹에서 확인하세요</p>
+        </section>
+
+        <!-- 검색 및 필터 -->
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 링크 검색...">
+                <select id="platformFilter">
+                    <option value="">모든 플랫폼</option>
+                    <option value="youtube">유튜브</option>
+                    <option value="netflix">넷플릭스</option>
+                    <option value="watcha">왓챠</option>
+                    <option value="coupang">쿠팡플레이</option>
+                    <option value="tving">티빙</option>
+                    <option value="wavve">웨이브</option>
+                    <option value="disney">디즈니+</option>
+                    <option value="other">기타</option>
+                </select>
+                <select id="sortBy">
+                    <option value="recent">최신순</option>
+                    <option value="title">제목순</option>
+                    <option value="platform">플랫폼순</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- 링크 그리드 -->
+        <section class="links-section">
+            <div id="linksGrid" class="links-grid">
+                <!-- 샘플 링크 카드들 -->
+                <div class="link-card">
+                    <div class="link-header">
+                        <span class="platform-badge youtube">유튜브</span>
+                        <button class="link-menu">⋮</button>
+                    </div>
+                    <div class="link-content">
+                        <h3>샘플 링크 1</h3>
+                        <p class="link-description">링크 설명이 여기에 표시됩니다</p>
+                        <div class="link-tags">
+                            <span class="tag">태그1</span>
+                            <span class="tag">태그2</span>
+                        </div>
+                    </div>
+                    <div class="link-footer">
+                        <button class="btn-open" onclick="alert('앱에서 링크를 열 수 있습니다')">열기</button>
+                        <button class="btn-copy" onclick="copyToClipboard('https://example.com')">복사</button>
+                    </div>
+                </div>
+
+                <div class="link-card">
+                    <div class="link-header">
+                        <span class="platform-badge netflix">넷플릭스</span>
+                        <button class="link-menu">⋮</button>
+                    </div>
+                    <div class="link-content">
+                        <h3>샘플 링크 2</h3>
+                        <p class="link-description">두 번째 샘플 링크입니다</p>
+                        <div class="link-tags">
+                            <span class="tag">드라마</span>
+                        </div>
+                    </div>
+                    <div class="link-footer">
+                        <button class="btn-open" onclick="alert('앱에서 링크를 열 수 있습니다')">열기</button>
+                        <button class="btn-copy" onclick="copyToClipboard('https://example.com')">복사</button>
+                    </div>
+                </div>
+
+                <div class="link-card">
+                    <div class="link-header">
+                        <span class="platform-badge watcha">왓챠</span>
+                        <button class="link-menu">⋮</button>
+                    </div>
+                    <div class="link-content">
+                        <h3>샘플 링크 3</h3>
+                        <p class="link-description">세 번째 샘플 링크입니다</p>
+                        <div class="link-tags">
+                            <span class="tag">영화</span>
+                            <span class="tag">액션</span>
+                        </div>
+                    </div>
+                    <div class="link-footer">
+                        <button class="btn-open" onclick="alert('앱에서 링크를 열 수 있습니다')">열기</button>
+                        <button class="btn-copy" onclick="copyToClipboard('https://example.com')">복사</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">📭</div>
+                <h3>링크가 없습니다</h3>
+                <p>모바일 앱에서 링크를 추가해보세요</p>
+                <a href="index.html#download" class="btn btn-primary">앱 다운로드</a>
+            </div>
+        </section>
+
+        <!-- 정보 배너 -->
+        <section class="info-banner">
+            <h3>💡 모바일 앱에서 더 많은 기능을!</h3>
+            <p>링크 추가, 폴더 관리, 백업 등 모든 기능을 모바일 앱에서 이용하실 수 있습니다.</p>
+            <div style="margin-top: 1rem;">
+                <a href="index.html#download" class="btn btn-primary">다운로드</a>
+                <a href="guide.html" class="btn btn-secondary">사용 가이드</a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
+        <p>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="contact.html">문의하기</a>
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('로그아웃 하시겠습니까?')) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('링크가 복사되었습니다!');
+            }).catch(err => {
+                console.error('복사 실패:', err);
+                alert('복사에 실패했습니다.');
+            });
+        }
+
+        // 검색 및 필터 기능
+        document.getElementById('searchInput').addEventListener('input', filterLinks);
+        document.getElementById('platformFilter').addEventListener('change', filterLinks);
+        document.getElementById('sortBy').addEventListener('change', sortLinks);
+
+        function filterLinks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const platform = document.getElementById('platformFilter').value;
+            
+            console.log('Filtering:', searchTerm, platform);
+            // TODO: 실제 필터링 로직 구현
+        }
+
+        function sortLinks() {
+            const sortBy = document.getElementById('sortBy').value;
+            console.log('Sorting by:', sortBy);
+            // TODO: 실제 정렬 로직 구현
+        }
+    </script>
+
+    <style>
+        .search-section {
+            margin: 2rem 0;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-container input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-container select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .links-section {
+            margin: 2rem 0;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .link-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .link-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .platform-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .platform-badge.youtube {
+            background: #FF0000;
+        }
+
+        .platform-badge.netflix {
+            background: #E50914;
+        }
+
+        .platform-badge.watcha {
+            background: #FF0558;
+        }
+
+        .link-menu {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .link-content h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .link-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .link-footer {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-open, .btn-copy {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .btn-open {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-copy {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-open:hover, .btn-copy:hover {
+            opacity: 0.8;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('로그아웃 하시겠습니까?')) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

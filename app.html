@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goldottlink - 링크 관리</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-nav {
+            margin-top: 2rem;
+        }
+
+        .nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.2);
+            border-left-color: white;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: margin-left 0.3s;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #667eea;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-left: 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        /* Content sections */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        /* Link cards */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .link-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .link-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .link-platform {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .platform-youtube { background: #ff0000; color: white; }
+        .platform-netflix { background: #e50914; color: white; }
+        .platform-disney { background: #113ccf; color: white; }
+        .platform-tving { background: #ff153c; color: white; }
+        .platform-wavve { background: #1eafed; color: white; }
+        .platform-watcha { background: #ff0558; color: white; }
+        .platform-etc { background: #95a5a6; color: white; }
+
+        .link-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .link-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.25rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .link-action-btn:hover {
+            opacity: 1;
+        }
+
+        .link-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .link-url {
+            font-size: 0.9rem;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .link-meta {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* Folder list */
+        .folder-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .folder-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .folder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .folder-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .folder-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .folder-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-submit {
+            padding: 0.75rem 2rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            padding: 0.75rem 2rem;
+            background: #f8f9fa;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Backup section */
+        .backup-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .backup-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .backup-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .backup-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .backup-card button {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .backup-card button:hover {
+            background: #5568d3;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Tablet/Foldable devices (768px - 1024px) */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+                padding: 1.5rem;
+            }
+
+            .links-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .folder-list {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .top-bar {
+                padding: 1rem 1.5rem;
+            }
+
+            .backup-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-content {
+                max-width: 600px;
+            }
+        }
+
+        /* Mobile devices (< 768px) */
+        @media (max-width: 767px) {
+            .sidebar {
+                width: 280px;
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .menu-toggle {
+                display: block;
+                padding: 0.5rem;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .folder-list {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+
+            .search-box {
+                max-width: 100%;
+                order: 2;
+            }
+
+            .user-actions {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                order: 1;
+            }
+
+            .btn-action {
+                flex: 1;
+                min-width: calc(50% - 0.5rem);
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .backup-options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .section-header select {
+                width: 100%;
+            }
+        }
+
+        /* Small mobile devices (< 480px) */
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+            }
+
+            .sidebar-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .nav-item {
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            .link-card {
+                padding: 1rem;
+            }
+
+            .folder-card {
+                padding: 1.5rem;
+            }
+
+            .top-bar {
+                padding: 0.75rem;
+            }
+
+            .btn-action {
+                font-size: 0.8rem;
+                padding: 0.6rem 0.4rem;
+            }
+        }
+
+        /* Desktop/Large screens (> 1024px) */
+        @media (min-width: 1025px) {
+            .main-content {
+                max-width: 1400px;
+                margin-left: 250px;
+                margin-right: auto;
+            }
+
+            .links-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+
+            .folder-list {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        /* Landscape mode for mobile/tablets */
+        @media (max-width: 1024px) and (orientation: landscape) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .links-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Sidebar overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar overlay for mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>🔗 goldottlink</h2>
+                <div class="user-info" id="userInfo">로컬 모드</div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-section="links">
+                    <span class="nav-icon">🔗</span>
+                    <span>내 링크</span>
+                </div>
+                <div class="nav-item" data-section="folders">
+                    <span class="nav-icon">📁</span>
+                    <span>폴더 관리</span>
+                </div>
+                <div class="nav-item" data-section="backup">
+                    <span class="nav-icon">💾</span>
+                    <span>백업/복원</span>
+                </div>
+                <div class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>설정</span>
+                </div>
+                <div class="nav-item" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span>로그아웃</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <button class="menu-toggle" id="menuToggle">☰</button>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="링크 검색...">
+                </div>
+                <div class="user-actions">
+                    <button class="btn-action btn-primary" onclick="showAddLinkModal()">➕ 링크 추가</button>
+                    <button class="btn-action btn-secondary" onclick="showAddFolderModal()">📁 폴더 생성</button>
+                </div>
+            </div>
+
+            <!-- Links Section -->
+            <div class="content-section active" id="linksSection">
+                <div class="section-header">
+                    <h2>내 링크</h2>
+                    <select id="filterPlatform" onchange="filterLinks()">
+                        <option value="all">모든 플랫폼</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="netflix">Netflix</option>
+                        <option value="disney">Disney+</option>
+                        <option value="tving">Tving</option>
+                        <option value="wavve">Wavve</option>
+                        <option value="watcha">Watcha</option>
+                    </select>
+                </div>
+                <div class="links-grid" id="linksGrid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>로딩 중...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folders Section -->
+            <div class="content-section" id="foldersSection">
+                <div class="section-header">
+                    <h2>폴더 관리</h2>
+                </div>
+                <div class="folder-list" id="folderList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>로딩 중...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup Section -->
+            <div class="content-section" id="backupSection">
+                <div class="section-header">
+                    <h2>백업 & 복원</h2>
+                </div>
+                <div class="backup-options">
+                    <div class="backup-card">
+                        <div class="backup-icon">💾</div>
+                        <h3>백업 생성</h3>
+                        <p>현재 데이터를 JSON 파일로 백업합니다.</p>
+                        <button onclick="createBackup()">백업 생성</button>
+                    </div>
+                    <div class="backup-card">
+                        <div class="backup-icon">📤</div>
+                        <h3>내보내기</h3>
+                        <p>데이터를 CSV 또는 Excel 파일로 내보냅니다.</p>
+                        <button onclick="exportData('csv')">CSV로 내보내기</button>
+                        <button onclick="exportData('json')">JSON으로 내보내기</button>
+                    </div>
+                    <div class="backup-card">
+                        <div class="backup-icon">📥</div>
+                        <h3>가져오기</h3>
+                        <p>백업 파일 또는 CSV를 가져옵니다.</p>
+                        <input type="file" id="importFile" accept=".json,.csv" style="display:none" onchange="importData(this)">
+                        <button onclick="document.getElementById('importFile').click()">파일 선택</button>
+                    </div>
+                    <div class="backup-card">
+                        <div class="backup-icon">🔄</div>
+                        <h3>복원</h3>
+                        <p>백업 파일에서 데이터를 복원합니다.</p>
+                        <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreBackup(this)">
+                        <button onclick="document.getElementById('restoreFile').click()">백업 복원</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="content-section" id="settingsSection">
+                <div class="section-header">
+                    <h2>설정</h2>
+                </div>
+                <div style="background: white; padding: 2rem; border-radius: 12px;">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                            다크 모드
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>링크 열기 방식</label>
+                        <select id="linkOpenMode">
+                            <option value="popup">팝업 창</option>
+                            <option value="tab">새 탭</option>
+                            <option value="same">같은 창</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>데이터 저장 위치</label>
+                        <select id="storageMode" disabled>
+                            <option value="local">로컬 저장소</option>
+                            <option value="cloud">클라우드 (로그인 필요)</option>
+                        </select>
+                    </div>
+                    <button class="btn-submit" onclick="saveSettings()">설정 저장</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Link Modal -->
+    <div class="modal" id="addLinkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>링크 추가</h3>
+                <button class="close-modal" onclick="closeModal('addLinkModal')">✕</button>
+            </div>
+            <form onsubmit="addLink(event)">
+                <div class="form-group">
+                    <label for="linkUrl">링크 URL *</label>
+                    <input type="url" id="linkUrl" required placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="linkTitle">제목 *</label>
+                    <input type="text" id="linkTitle" required placeholder="링크 제목">
+                </div>
+                <div class="form-group">
+                    <label for="linkFolder">폴더</label>
+                    <select id="linkFolder">
+                        <option value="">폴더 없음</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="linkDescription">설명</label>
+                    <textarea id="linkDescription" placeholder="링크에 대한 설명..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('addLinkModal')">취소</button>
+                    <button type="submit" class="btn-submit">추가</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Folder Modal -->
+    <div class="modal" id="addFolderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>폴더 생성</h3>
+                <button class="close-modal" onclick="closeModal('addFolderModal')">✕</button>
+            </div>
+            <form onsubmit="addFolder(event)">
+                <div class="form-group">
+                    <label for="folderName">폴더 이름 *</label>
+                    <input type="text" id="folderName" required placeholder="폴더 이름">
+                </div>
+                <div class="form-group">
+                    <label for="folderIcon">아이콘</label>
+                    <select id="folderIcon">
+                        <option value="📁">📁 기본 폴더</option>
+                        <option value="🎬">🎬 영화</option>
+                        <option value="📺">📺 TV 쇼</option>
+                        <option value="🎵">🎵 음악</option>
+                        <option value="📚">📚 도서</option>
+                        <option value="🎮">🎮 게임</option>
+                        <option value="⭐">⭐ 즐겨찾기</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('addFolderModal')">취소</button>
+                    <button type="submit" class="btn-submit">생성</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let links = [];
+        let folders = [];
+        let currentFilter = 'all';
+        let currentSection = 'links';
+
+        // Initialize app
+        function init() {
+            loadData();
+            setupEventListeners();
+            checkAuth();
+            renderLinks();
+            renderFolders();
+            loadSettings();
+        }
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode') || (token ? 'account' : 'local');
+
+            if (mode === 'local' || !token) {
+                document.getElementById('userInfo').textContent = '로컬 모드';
+                document.getElementById('storageMode').value = 'local';
+            } else {
+                document.getElementById('userInfo').textContent = user.email || '사용자';
+                document.getElementById('storageMode').value = 'cloud';
+            }
+        }
+
+        function setupEventListeners() {
+            // Mobile menu toggle
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking overlay
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            });
+
+            // Navigation
+            document.querySelectorAll('.nav-item[data-section]').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.dataset.section;
+                    switchSection(section);
+                    
+                    // Update active state
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+
+                    // Close mobile menu
+                    if (window.innerWidth <= 767) {
+                        sidebar.classList.remove('active');
+                        sidebarOverlay.classList.remove('active');
+                    }
+                });
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                filterLinks(e.target.value);
+            });
+        }
+
+        function switchSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section + 'Section').classList.add('active');
+            currentSection = section;
+        }
+
+        function loadData() {
+            // Load from localStorage
+            const savedLinks = localStorage.getItem('goldottlink_links');
+            const savedFolders = localStorage.getItem('goldottlink_folders');
+
+            if (savedLinks) {
+                links = JSON.parse(savedLinks);
+            } else {
+                // Demo data
+                links = [
+                    {
+                        id: 1,
+                        title: '넷플릭스 오리지널 시리즈',
+                        url: 'https://www.netflix.com/browse',
+                        platform: 'netflix',
+                        folder: '영화',
+                        description: '넷플릭스 추천 시리즈',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        title: '유튜브 뮤직 플레이리스트',
+                        url: 'https://www.youtube.com/playlist',
+                        platform: 'youtube',
+                        folder: '음악',
+                        description: '즐겨듣는 음악 모음',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+            }
+
+            if (savedFolders) {
+                folders = JSON.parse(savedFolders);
+            } else {
+                folders = [
+                    { id: 1, name: '영화', icon: '🎬', count: 12 },
+                    { id: 2, name: '음악', icon: '🎵', count: 8 },
+                    { id: 3, name: 'TV 쇼', icon: '📺', count: 15 }
+                ];
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('goldottlink_links', JSON.stringify(links));
+            localStorage.setItem('goldottlink_folders', JSON.stringify(folders));
+        }
+
+        function renderLinks(filter = '') {
+            const grid = document.getElementById('linksGrid');
+            let filteredLinks = links;
+
+            // Apply platform filter
+            if (currentFilter !== 'all') {
+                filteredLinks = filteredLinks.filter(link => link.platform === currentFilter);
+            }
+
+            // Apply search filter
+            if (filter) {
+                filteredLinks = filteredLinks.filter(link => 
+                    link.title.toLowerCase().includes(filter.toLowerCase()) ||
+                    link.url.toLowerCase().includes(filter.toLowerCase())
+                );
+            }
+
+            if (filteredLinks.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔗</div>
+                        <h3>링크가 없습니다</h3>
+                        <p>새로운 링크를 추가해보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Safely encode user data to prevent XSS
+            const escapeHtml = (str) => {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            };
+
+            grid.innerHTML = filteredLinks.map(link => `
+                <div class="link-card" data-link-id="${link.id}">
+                    <div class="link-header">
+                        <span class="link-platform platform-${escapeHtml(link.platform)}">${escapeHtml(getPlatformName(link.platform))}</span>
+                        <div class="link-actions">
+                            <button class="link-action-btn btn-open" data-url="${escapeHtml(link.url)}" title="열기">▶️</button>
+                            <button class="link-action-btn btn-edit" data-id="${link.id}" title="수정">✏️</button>
+                            <button class="link-action-btn btn-delete" data-id="${link.id}" title="삭제">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="link-title">${escapeHtml(link.title)}</div>
+                    <div class="link-url">${escapeHtml(link.url)}</div>
+                    ${link.description ? `<p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">${escapeHtml(link.description)}</p>` : ''}
+                    <div class="link-meta">
+                        <span>📁 ${escapeHtml(link.folder || '없음')}</span>
+                        <span>📅 ${new Date(link.createdAt).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners
+            grid.querySelectorAll('.btn-open').forEach(btn => {
+                btn.addEventListener('click', () => openLink(btn.dataset.url));
+            });
+            grid.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', () => editLink(parseInt(btn.dataset.id)));
+            });
+            grid.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', () => deleteLink(parseInt(btn.dataset.id)));
+            });
+        }
+
+        function renderFolders() {
+            const list = document.getElementById('folderList');
+            
+            if (folders.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📁</div>
+                        <h3>폴더가 없습니다</h3>
+                        <p>새로운 폴더를 생성해보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = folders.map(folder => `
+                <div class="folder-card" onclick="filterByFolder('${folder.name}')">
+                    <div class="folder-icon">${folder.icon}</div>
+                    <div class="folder-name">${folder.name}</div>
+                    <div class="folder-count">${folder.count || 0}개의 링크</div>
+                </div>
+            `).join('');
+        }
+
+        function getPlatformName(platform) {
+            const names = {
+                youtube: 'YouTube',
+                netflix: 'Netflix',
+                disney: 'Disney+',
+                tving: 'Tving',
+                wavve: 'Wavve',
+                watcha: 'Watcha'
+            };
+            return names[platform] || '기타';
+        }
+
+        function showAddLinkModal() {
+            // Populate folder dropdown
+            const folderSelect = document.getElementById('linkFolder');
+            folderSelect.innerHTML = '<option value="">폴더 없음</option>' + 
+                folders.map(f => `<option value="${f.name}">${f.icon} ${f.name}</option>`).join('');
+            
+            document.getElementById('addLinkModal').classList.add('active');
+        }
+
+        function showAddFolderModal() {
+            document.getElementById('addFolderModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function addLink(event) {
+            event.preventDefault();
+            
+            const url = document.getElementById('linkUrl').value;
+            const title = document.getElementById('linkTitle').value;
+            const folder = document.getElementById('linkFolder').value;
+            const description = document.getElementById('linkDescription').value;
+            
+            const platform = detectPlatform(url);
+            
+            const newLink = {
+                id: Date.now() + Math.floor(Math.random() * 1000),
+                title,
+                url,
+                platform,
+                folder,
+                description,
+                createdAt: new Date().toISOString()
+            };
+            
+            links.unshift(newLink);
+            saveData();
+            renderLinks();
+            closeModal('addLinkModal');
+            
+            // Reset form
+            event.target.reset();
+            
+            alert('링크가 추가되었습니다!');
+        }
+
+        function addFolder(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('folderName').value;
+            const icon = document.getElementById('folderIcon').value;
+            
+            const newFolder = {
+                id: Date.now() + Math.floor(Math.random() * 1000),
+                name,
+                icon,
+                count: 0
+            };
+            
+            folders.push(newFolder);
+            saveData();
+            renderFolders();
+            closeModal('addFolderModal');
+            
+            // Reset form
+            event.target.reset();
+            
+            alert('폴더가 생성되었습니다!');
+        }
+
+        function detectPlatform(url) {
+            if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+            if (url.includes('netflix.com')) return 'netflix';
+            if (url.includes('disneyplus.com')) return 'disney';
+            if (url.includes('tving.com')) return 'tving';
+            if (url.includes('wavve.com')) return 'wavve';
+            if (url.includes('watcha.com')) return 'watcha';
+            return 'etc';
+        }
+
+        function openLink(url) {
+            const mode = document.getElementById('linkOpenMode').value;
+            if (mode === 'popup') {
+                window.open(url, '_blank', 'width=1200,height=800');
+            } else if (mode === 'tab') {
+                window.open(url, '_blank');
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        function editLink(id) {
+            const link = links.find(l => l.id === id);
+            if (!link) return;
+            
+            // Populate form with link data
+            document.getElementById('linkUrl').value = link.url;
+            document.getElementById('linkTitle').value = link.title;
+            document.getElementById('linkFolder').value = link.folder || '';
+            document.getElementById('linkDescription').value = link.description || '';
+            
+            // Change form submission to update instead of add
+            const form = document.querySelector('#addLinkModal form');
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                
+                link.url = document.getElementById('linkUrl').value;
+                link.title = document.getElementById('linkTitle').value;
+                link.folder = document.getElementById('linkFolder').value;
+                link.description = document.getElementById('linkDescription').value;
+                link.platform = detectPlatform(link.url);
+                
+                saveData();
+                renderLinks();
+                closeModal('addLinkModal');
+                
+                // Reset form handler
+                form.onsubmit = function(e) { addLink(e); };
+                form.reset();
+                
+                alert('링크가 수정되었습니다!');
+            };
+            
+            showAddLinkModal();
+        }
+
+        function deleteLink(id) {
+            if (confirm('이 링크를 삭제하시겠습니까?')) {
+                links = links.filter(link => link.id !== id);
+                saveData();
+                renderLinks();
+                alert('링크가 삭제되었습니다.');
+            }
+        }
+
+        function filterLinks(searchTerm) {
+            renderLinks(searchTerm);
+        }
+
+        function filterByFolder(folderName) {
+            switchSection('links');
+            // Filter by folder
+            const grid = document.getElementById('linksGrid');
+            const filteredLinks = links.filter(link => link.folder === folderName);
+            
+            if (filteredLinks.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔗</div>
+                        <h3>이 폴더에 링크가 없습니다</h3>
+                        <p>새로운 링크를 추가해보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Safely encode user data to prevent XSS
+            const escapeHtml = (str) => {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            };
+
+            grid.innerHTML = filteredLinks.map(link => `
+                <div class="link-card" data-link-id="${link.id}">
+                    <div class="link-header">
+                        <span class="link-platform platform-${escapeHtml(link.platform)}">${escapeHtml(getPlatformName(link.platform))}</span>
+                        <div class="link-actions">
+                            <button class="link-action-btn btn-open-folder" data-url="${escapeHtml(link.url)}" title="열기">▶️</button>
+                            <button class="link-action-btn btn-edit-folder" data-id="${link.id}" title="수정">✏️</button>
+                            <button class="link-action-btn btn-delete-folder" data-id="${link.id}" title="삭제">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="link-title">${escapeHtml(link.title)}</div>
+                    <div class="link-url">${escapeHtml(link.url)}</div>
+                    ${link.description ? `<p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">${escapeHtml(link.description)}</p>` : ''}
+                    <div class="link-meta">
+                        <span>📁 ${escapeHtml(link.folder || '없음')}</span>
+                        <span>📅 ${new Date(link.createdAt).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners
+            grid.querySelectorAll('.btn-open-folder').forEach(btn => {
+                btn.addEventListener('click', () => openLink(btn.dataset.url));
+            });
+            grid.querySelectorAll('.btn-edit-folder').forEach(btn => {
+                btn.addEventListener('click', () => editLink(parseInt(btn.dataset.id)));
+            });
+            grid.querySelectorAll('.btn-delete-folder').forEach(btn => {
+                btn.addEventListener('click', () => deleteLink(parseInt(btn.dataset.id)));
+            });
+        }
+
+        // Backup and export functions
+        function createBackup() {
+            const backup = {
+                version: '1.0',
+                date: new Date().toISOString(),
+                links: links,
+                folders: folders
+            };
+            
+            const dataStr = JSON.stringify(backup, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `goldottlink-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('백업 파일이 다운로드되었습니다!');
+        }
+
+        function exportData(format) {
+            if (format === 'json') {
+                createBackup();
+                return;
+            }
+            
+            if (format === 'csv') {
+                // Create CSV
+                let csv = 'Title,URL,Platform,Folder,Description,Created\n';
+                links.forEach(link => {
+                    csv += `"${link.title}","${link.url}","${link.platform}","${link.folder || ''}","${link.description || ''}","${new Date(link.createdAt).toLocaleDateString()}"\n`;
+                });
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `goldottlink-export-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                alert('CSV 파일이 다운로드되었습니다!');
+            }
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    if (file.name.endsWith('.json')) {
+                        const data = JSON.parse(e.target.result);
+                        // Merge with existing data
+                        if (confirm('기존 데이터와 병합하시겠습니까? (취소: 기존 데이터 유지)')) {
+                            if (data.links) links = [...links, ...data.links];
+                            if (data.folders) folders = [...folders, ...data.folders];
+                            saveData();
+                            renderLinks();
+                            renderFolders();
+                            alert('데이터를 가져왔습니다!');
+                        }
+                    } else if (file.name.endsWith('.csv')) {
+                        // Parse CSV - simple parser
+                        const lines = e.target.result.split('\n');
+                        let maxId = Math.max(0, ...links.map(l => l.id));
+                        let importCount = 0;
+                        
+                        for (let i = 1; i < lines.length; i++) {
+                            if (!lines[i].trim()) continue;
+                            const values = lines[i].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
+                            if (!values || values.length < 2) continue;
+                            
+                            const link = {
+                                id: ++maxId,
+                                title: values[0].replace(/^"|"$/g, ''),
+                                url: values[1].replace(/^"|"$/g, ''),
+                                platform: detectPlatform(values[1].replace(/^"|"$/g, '')),
+                                folder: values[3] ? values[3].replace(/^"|"$/g, '') : '',
+                                description: values[4] ? values[4].replace(/^"|"$/g, '') : '',
+                                createdAt: new Date().toISOString()
+                            };
+                            links.push(link);
+                            importCount++;
+                        }
+                        
+                        saveData();
+                        renderLinks();
+                        alert(`${importCount}개의 링크를 가져왔습니다!`);
+                    }
+                } catch (error) {
+                    alert('파일을 읽는 중 오류가 발생했습니다: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function restoreBackup(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            if (!confirm('백업을 복원하면 현재 데이터가 모두 교체됩니다. 계속하시겠습니까?')) {
+                input.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backup = JSON.parse(e.target.result);
+                    links = backup.links || [];
+                    folders = backup.folders || [];
+                    saveData();
+                    renderLinks();
+                    renderFolders();
+                    alert('백업이 복원되었습니다!');
+                } catch (error) {
+                    alert('백업 파일을 읽는 중 오류가 발생했습니다: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.getElementById('darkModeToggle').checked;
+            document.body.classList.toggle('dark-mode', isDark);
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        function loadSettings() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const linkOpenMode = localStorage.getItem('linkOpenMode') || 'popup';
+            
+            document.getElementById('darkModeToggle').checked = darkMode;
+            document.getElementById('linkOpenMode').value = linkOpenMode;
+            
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        function saveSettings() {
+            const linkOpenMode = document.getElementById('linkOpenMode').value;
+            localStorage.setItem('linkOpenMode', linkOpenMode);
+            alert('설정이 저장되었습니다!');
+        }
+
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

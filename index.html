@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>goldottlink - 멀티 OTT 링크 매니저 | YouTube, Netflix, Disney+ 링크 관리</title>
+    <meta name="description" content="goldottlink는 YouTube, Netflix, Disney+ 등 모든 OTT 플랫폼의 콘텐츠 링크를 한 곳에서 관리할 수 있는 스마트 링크 매니저입니다. 클라우드 동기화, 폴더 정리, 검색 기능을 제공합니다.">
+    <meta name="keywords" content="OTT, 링크 관리, YouTube, Netflix, Disney+, Tving, Wavve, 콘텐츠 관리, 북마크, 링크 저장">
+    <meta name="author" content="AI-Work-Project Team">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Korean">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://goldottlink.com/">
+    <meta property="og:title" content="goldottlink - 멀티 OTT 링크 매니저">
+    <meta property="og:description" content="YouTube, Netflix, Disney+ 등 모든 OTT 플랫폼의 콘텐츠 링크를 한 곳에서 스마트하게 관리하세요.">
+    <meta property="og:image" content="https://goldottlink.com/images/og-image.png">
+    <meta property="og:site_name" content="goldottlink">
+    <meta property="og:locale" content="ko_KR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://goldottlink.com/">
+    <meta name="twitter:title" content="goldottlink - 멀티 OTT 링크 매니저">
+    <meta name="twitter:description" content="YouTube, Netflix, Disney+ 등 모든 OTT 플랫폼의 콘텐츠 링크를 한 곳에서 스마트하게 관리하세요.">
+    <meta name="twitter:image" content="https://goldottlink.com/images/twitter-image.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://goldottlink.com/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "goldottlink",
+        "description": "멀티 OTT 플랫폼 링크 관리 애플리케이션",
+        "url": "https://goldottlink.com",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Android, iOS, Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "150"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "AI-Work-Project Team"
+        }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .download-section {
+            background: #f8f9fa;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .login-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 4rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 2rem;
+        }
+        
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            color: #666;
+            transition: color 0.3s;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            margin-bottom: -2px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active">홈</a></li>
+                <li><a href="features.html">기능</a></li>
+                <li><a href="guide.html">가이드</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">문의</a></li>
+                <li><a href="login.html" class="btn-login">로그인</a></li>
+            </ul>
+        </nav>
+        <div style="text-align: center; padding: 2rem 1rem;">
+            <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔗 goldottlink</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9;">모든 OTT 링크를 한 곳에서 관리하세요</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="section">
+            <h2>✨ 주요 기능</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <h3>📱 멀티 플랫폼</h3>
+                    <p>Android와 iOS에서 모두 사용 가능한 크로스 플랫폼 앱</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🗂️ 스마트 정리</h3>
+                    <p>계층적 폴더 구조로 체계적인 링크 관리</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Excel/CSV</h3>
+                    <p>대량 데이터 임포트/익스포트 지원</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 안전한 관리</h3>
+                    <p>AES-256 암호화로 데이터 보안</p>
+                </div>
+                <div class="feature-card">
+                    <h3>☁️ 클라우드 동기화</h3>
+                    <p>여러 기기에서 데이터 동기화</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 다양한 모드</h3>
+                    <p>인앱 브라우저, 팝업, 외부 브라우저</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="download-section" id="download">
+            <h2>📥 지금 다운로드하세요</h2>
+            <p>Android와 iOS에서 goldottlink를 무료로 사용하세요</p>
+            <div class="download-buttons">
+                <a href="https://play.google.com/store" target="_blank" class="btn btn-primary">
+                    📱 Google Play에서 다운로드
+                </a>
+                <a href="https://www.apple.com/app-store/" target="_blank" class="btn btn-secondary">
+                    🍎 App Store에서 다운로드
+                </a>
+                <a href="app.html" class="btn btn-primary" style="background: #48bb78;">
+                    🌐 웹에서 바로 사용하기
+                </a>
+            </div>
+            <p style="margin-top: 1rem; color: #666;">
+                <small>* 모바일 앱은 곧 출시 예정입니다. 웹 버전은 지금 사용 가능합니다!</small>
+            </p>
+        </div>
+
+        <section class="section">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('login')">로그인</button>
+                <button class="tab" onclick="showTab('features')">기능 소개</button>
+                <button class="tab" onclick="showTab('guide')">사용 가이드</button>
+            </div>
+
+            <div id="login" class="tab-content active">
+                <div class="login-section">
+                    <h2 style="text-align: center; margin-bottom: 1.5rem;">로그인</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="email" id="email" placeholder="example@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">비밀번호</label>
+                            <input type="password" id="password" placeholder="비밀번호를 입력하세요" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            로그인
+                        </button>
+                        <p style="text-align: center; margin-top: 1rem;">
+                            <a href="#" style="color: #667eea;">비밀번호를 잊으셨나요?</a>
+                        </p>
+                        <hr style="margin: 1.5rem 0;">
+                        <p style="text-align: center;">
+                            계정이 없으신가요? <a href="#" style="color: #667eea;">회원가입</a>
+                        </p>
+                        <p style="text-align: center; margin-top: 0.5rem;">
+                            <a href="#" style="color: #48bb78;">로컬 모드로 사용하기</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <div id="features" class="tab-content">
+                <h3>📱 멀티 OTT 지원</h3>
+                <p>유튜브, 넷플릭스, 쿠팡플레이, 왓챠 등 다양한 OTT 플랫폼의 링크를 지원합니다.</p>
+                
+                <h3 style="margin-top: 2rem;">🗂️ 계층적 폴더 구조</h3>
+                <p>큰 주제 → 작은 주제 → 링크로 이어지는 3단계 계층 구조로 체계적으로 정리할 수 있습니다.</p>
+                
+                <h3 style="margin-top: 2rem;">🎨 다양한 뷰 모드</h3>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li><strong>플림 모드</strong>: 카드형 뷰로 시각적으로 링크 탐색</li>
+                    <li><strong>일반 모드</strong>: 단순한 리스트 형식으로 빠른 접근</li>
+                    <li><strong>폴드 모드</strong>: 폴더 트리 구조로 계층적 탐색</li>
+                </ul>
+                
+                <h3 style="margin-top: 2rem;">📊 데이터 관리</h3>
+                <p>Excel이나 CSV 파일을 통해 대량의 링크를 한 번에 가져오거나 내보낼 수 있습니다.</p>
+            </div>
+
+            <div id="guide" class="tab-content">
+                <h3>1️⃣ 앱 다운로드 및 설치</h3>
+                <p>Google Play Store 또는 App Store에서 "goldottlink"를 검색하여 다운로드하세요.</p>
+                
+                <h3 style="margin-top: 2rem;">2️⃣ 계정 생성 또는 로컬 모드 선택</h3>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li><strong>계정 생성</strong>: 클라우드 동기화와 백업 기능 이용 가능</li>
+                    <li><strong>로컬 모드</strong>: 회원가입 없이 기기에만 데이터 저장</li>
+                </ul>
+                
+                <h3 style="margin-top: 2rem;">3️⃣ 링크 추가하기</h3>
+                <ol style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>메인 화면에서 '+' 버튼 클릭</li>
+                    <li>링크 URL 입력 (자동으로 OTT 플랫폼 감지)</li>
+                    <li>제목, 폴더, 태그 설정</li>
+                    <li>저장 버튼 클릭</li>
+                </ol>
+                
+                <h3 style="margin-top: 2rem;">4️⃣ 폴더로 정리하기</h3>
+                <p>폴더 관리 메뉴에서 주제별로 폴더를 생성하고, 드래그 앤 드롭으로 링크를 정리하세요.</p>
+                
+                <h3 style="margin-top: 2rem;">5️⃣ Excel/CSV로 가져오기</h3>
+                <p>설정 → 데이터 관리 → 가져오기 메뉴에서 Excel 또는 CSV 파일을 선택하세요.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📋 시스템 요구사항</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Android</h3>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Android 6.0 이상</li>
+                        <li>최소 2GB RAM</li>
+                        <li>50MB 저장공간</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>iOS</h3>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>iOS 12.0 이상</li>
+                        <li>iPhone 6s 이상</li>
+                        <li>50MB 저장공간</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>💬 문의하기</h2>
+            <p>궁금한 점이나 문제가 있으시면 언제든 연락주세요.</p>
+            <p style="margin-top: 1rem;">
+                📧 이메일: <a href="mailto:support@goldottlink.com" style="color: #667eea;">support@goldottlink.com</a><br>
+                🐙 GitHub: <a href="https://github.com/AI-Work-Project/goldottlink" style="color: #667eea;" target="_blank">AI-Work-Project/goldottlink</a>
+            </p>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="#" style="color: white; margin: 0 1rem;">개인정보처리방침</a>
+            <a href="#" style="color: white; margin: 0 1rem;">이용약관</a>
+        </p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('navMenu');
+            const toggle = document.getElementById('menuToggle');
+            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+                menu.classList.remove('active');
+            }
+        });
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

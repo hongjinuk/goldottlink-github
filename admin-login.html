@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 로그인 - goldottlink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .admin-login-container {
+            max-width: 500px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .admin-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .admin-login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="features.html">기능</a></li>
+                <li><a href="guide.html">가이드</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">문의</a></li>
+                <li><a href="login.html" class="btn-login">사용자 로그인</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="admin-login-container">
+            <div style="text-align: center;">
+                <span class="admin-badge">🔐 관리자 전용</span>
+            </div>
+
+            <div class="admin-login-form">
+                <h2 style="text-align: center; margin-bottom: 0.5rem;">관리자 로그인</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+                    시스템 관리자 계정으로 로그인하세요
+                </p>
+
+                <div class="admin-warning">
+                    ⚠️ <strong>주의:</strong> 관리자 계정은 시스템의 모든 데이터에 접근할 수 있습니다. 
+                    비인가 접근 시도는 기록되며 법적 책임을 물을 수 있습니다.
+                </div>
+
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="email">관리자 이메일</label>
+                        <input type="email" id="email" name="email" required placeholder="admin@goldottlink.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">비밀번호</label>
+                        <input type="password" id="password" name="password" required placeholder="비밀번호를 입력하세요">
+                    </div>
+
+                    <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        관리자로 로그인
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="login.html" style="color: #667eea; text-decoration: none;">
+                        ← 일반 사용자 로그인으로 돌아가기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
+        <p>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="contact.html">문의하기</a>
+        </p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // API Configuration
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:8080' 
+            : 'https://api.goldottlink.com';
+
+        // Admin login form handler
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Backend API로 로그인 요청
+            fetch(`${API_BASE_URL}/api/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.token && data.user) {
+                    // Check if user has admin role (this would be returned from backend)
+                    // For now, we'll check later when accessing admin endpoints
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminUser', JSON.stringify(data.user));
+                    localStorage.setItem('adminUserId', data.user.id);
+                    
+                    // Redirect to admin dashboard
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    alert('로그인 실패: ' + (data.error || '알 수 없는 오류'));
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                alert('서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.');
+            });
+        });
+    </script>
+</body>
+</html>

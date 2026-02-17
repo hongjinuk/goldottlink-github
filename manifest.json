@@ -1,0 +1,83 @@
+{
+  "name": "goldottlink - 멀티 OTT 링크 매니저",
+  "short_name": "goldottlink",
+  "description": "YouTube, Netflix, Disney+ 등 모든 OTT 플랫폼의 콘텐츠 링크를 한 곳에서 관리",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "app-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": [
+    "productivity",
+    "utilities",
+    "entertainment"
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/images/screenshot2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "링크 추가",
+      "short_name": "추가",
+      "description": "새로운 OTT 링크 추가",
+      "url": "/dashboard.html?action=add",
+      "icons": [
+        {
+          "src": "favicon.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "링크 보기",
+      "short_name": "보기",
+      "description": "저장된 링크 보기",
+      "url": "/viewer.html",
+      "icons": [
+        {
+          "src": "favicon.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.goldottlink.app",
+      "id": "com.goldottlink.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/goldottlink/id123456789"
+    }
+  ],
+  "prefer_related_applications": false
+}

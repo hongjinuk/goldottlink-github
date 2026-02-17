@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - goldottlink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .admin-nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .admin-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .admin-tab:hover {
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .data-table {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f5f5f5;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .data-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .btn-view {
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-view:hover {
+            background: #5568d3;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .detail-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .detail-item {
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .detail-item label {
+            display: block;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .detail-item .value {
+            color: #333;
+        }
+
+        .json-viewer {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge-admin {
+            background: #764ba2;
+            color: white;
+        }
+
+        .badge-user {
+            background: #48bb78;
+            color: white;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-nav">
+            <div>
+                <h1 style="margin: 0; font-size: 1.5rem;">🔗 goldottlink 관리자</h1>
+                <p style="margin: 0.25rem 0 0 0; opacity: 0.9; font-size: 0.9rem;" id="adminUserInfo"></p>
+            </div>
+            <button class="logout-btn" onclick="logout()">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 1200px;">
+        <div class="admin-tabs">
+            <button class="admin-tab active" onclick="switchTab('users')">사용자 관리</button>
+            <button class="admin-tab" onclick="switchTab('history')">액션 히스토리</button>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="usersTab" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>총 사용자</h3>
+                    <div class="value" id="totalUsers">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>관리자</h3>
+                    <div class="value" id="totalAdmins">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>일반 사용자</h3>
+                    <div class="value" id="totalRegularUsers">-</div>
+                </div>
+            </div>
+
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>이메일</th>
+                            <th>사용자명</th>
+                            <th>역할</th>
+                            <th>이메일 인증</th>
+                            <th>가입일</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem;">
+                                데이터를 불러오는 중...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="usersPagination"></div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="historyTab" class="tab-content">
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>사용자 ID</th>
+                            <th>액션</th>
+                            <th>IP 주소</th>
+                            <th>일시</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 2rem;">
+                                데이터를 불러오는 중...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="historyPagination"></div>
+        </div>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>사용자 상세 정보</h2>
+                <button class="btn-close" onclick="closeModal('userModal')">&times;</button>
+            </div>
+            <div id="userDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- History Detail Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>액션 히스토리 상세</h2>
+                <button class="btn-close" onclick="closeModal('historyModal')">&times;</button>
+            </div>
+            <div id="historyDetailContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const adminToken = localStorage.getItem('adminToken');
+        const adminUser = localStorage.getItem('adminUser');
+        const adminUserId = localStorage.getItem('adminUserId');
+
+        if (!adminToken || !adminUserId) {
+            alert('관리자 로그인이 필요합니다.');
+            window.location.href = 'admin-login.html';
+        }
+
+        // Display admin user info
+        if (adminUser) {
+            try {
+                const user = JSON.parse(adminUser);
+                document.getElementById('adminUserInfo').textContent = `${user.email || user.displayName}`;
+            } catch (e) {
+                console.error('Failed to parse admin user:', e);
+            }
+        }
+
+        // API Configuration
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:8080' 
+            : 'https://api.goldottlink.com';
+
+        let currentUsersPage = 0;
+        let currentHistoryPage = 0;
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Find and activate the clicked tab
+            const tabs = document.querySelectorAll('.admin-tab');
+            tabs.forEach(tab => {
+                if (tab.textContent.includes('사용자 관리') && tabName === 'users') {
+                    tab.classList.add('active');
+                } else if (tab.textContent.includes('액션 히스토리') && tabName === 'history') {
+                    tab.classList.add('active');
+                }
+            });
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+
+            // Load data for the tab
+            if (tabName === 'users') {
+                loadUsers(0);
+            } else if (tabName === 'history') {
+                loadHistory(0);
+            }
+        }
+
+        // Load users
+        function loadUsers(page = 0) {
+            currentUsersPage = page;
+            
+            fetch(`${API_BASE_URL}/api/admin/users?page=${page}&size=20`, {
+                headers: {
+                    'X-User-Id': adminUserId
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert('권한이 없습니다: ' + data.error);
+                    window.location.href = 'admin-login.html';
+                    return;
+                }
+
+                // Update stats
+                document.getElementById('totalUsers').textContent = data.totalElements || 0;
+                const admins = data.users.filter(u => u.role === 'ADMIN').length;
+                document.getElementById('totalAdmins').textContent = admins;
+                document.getElementById('totalRegularUsers').textContent = (data.totalElements || 0) - admins;
+
+                // Update table
+                const tbody = document.getElementById('usersTableBody');
+                tbody.innerHTML = '';
+
+                if (data.users && data.users.length > 0) {
+                    data.users.forEach(user => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.email}</td>
+                            <td>${user.username}</td>
+                            <td><span class="badge ${user.role === 'ADMIN' ? 'badge-admin' : 'badge-user'}">${user.role}</span></td>
+                            <td>${user.emailVerified ? '✅' : '❌'}</td>
+                            <td>${new Date(user.createdAt).toLocaleDateString('ko-KR')}</td>
+                            <td><button class="btn-view" onclick="viewUser(${user.id})">상세보기</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;">사용자가 없습니다.</td></tr>';
+                }
+
+                // Update pagination
+                updatePagination('usersPagination', data.currentPage, data.totalPages, loadUsers);
+            })
+            .catch(error => {
+                console.error('Failed to load users:', error);
+                alert('사용자 목록을 불러오는데 실패했습니다.');
+            });
+        }
+
+        // Load history
+        function loadHistory(page = 0) {
+            currentHistoryPage = page;
+            
+            fetch(`${API_BASE_URL}/api/admin/history?page=${page}&size=50`, {
+                headers: {
+                    'X-User-Id': adminUserId
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert('권한이 없습니다: ' + data.error);
+                    window.location.href = 'admin-login.html';
+                    return;
+                }
+
+                const tbody = document.getElementById('historyTableBody');
+                tbody.innerHTML = '';
+
+                if (data.history && data.history.length > 0) {
+                    data.history.forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${item.id}</td>
+                            <td>${item.userId || '-'}</td>
+                            <td>${item.action}</td>
+                            <td>${item.ipAddress || '-'}</td>
+                            <td>${new Date(item.createdAt).toLocaleString('ko-KR')}</td>
+                            <td><button class="btn-view" onclick="viewHistory(${item.id})">상세보기</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">히스토리가 없습니다.</td></tr>';
+                }
+
+                // Update pagination
+                updatePagination('historyPagination', data.currentPage, data.totalPages, loadHistory);
+            })
+            .catch(error => {
+                console.error('Failed to load history:', error);
+                alert('히스토리를 불러오는데 실패했습니다.');
+            });
+        }
+
+        // View user detail
+        function viewUser(userId) {
+            fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
+                headers: {
+                    'X-User-Id': adminUserId
+                }
+            })
+            .then(res => res.json())
+            .then(user => {
+                const content = document.getElementById('userDetailContent');
+                content.innerHTML = `
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>사용자 ID</label>
+                            <div class="value">${user.id}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>이메일</label>
+                            <div class="value">${user.email}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>사용자명</label>
+                            <div class="value">${user.username}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>역할</label>
+                            <div class="value"><span class="badge ${user.role === 'ADMIN' ? 'badge-admin' : 'badge-user'}">${user.role}</span></div>
+                        </div>
+                        <div class="detail-item">
+                            <label>이메일 인증</label>
+                            <div class="value">${user.emailVerified ? '✅ 인증됨' : '❌ 미인증'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>가입일</label>
+                            <div class="value">${new Date(user.createdAt).toLocaleString('ko-KR')}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>최종 수정일</label>
+                            <div class="value">${new Date(user.updatedAt).toLocaleString('ko-KR')}</div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem; margin-bottom: 1rem;">사용자 액션 히스토리</h3>
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>액션</th>
+                                    <th>IP 주소</th>
+                                    <th>일시</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${user.actionHistory && user.actionHistory.length > 0 
+                                    ? user.actionHistory.map(h => `
+                                        <tr>
+                                            <td>${h.action}</td>
+                                            <td>${h.ipAddress || '-'}</td>
+                                            <td>${new Date(h.createdAt).toLocaleString('ko-KR')}</td>
+                                            <td><button class="btn-view" onclick="viewHistory(${h.id})">상세</button></td>
+                                        </tr>
+                                    `).join('')
+                                    : '<tr><td colspan="4" style="text-align: center; padding: 1rem;">히스토리가 없습니다.</td></tr>'
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                openModal('userModal');
+            })
+            .catch(error => {
+                console.error('Failed to load user detail:', error);
+                alert('사용자 정보를 불러오는데 실패했습니다.');
+            });
+        }
+
+        // View history detail
+        function viewHistory(historyId) {
+            fetch(`${API_BASE_URL}/api/admin/history/${historyId}`, {
+                headers: {
+                    'X-User-Id': adminUserId
+                }
+            })
+            .then(res => res.json())
+            .then(history => {
+                const content = document.getElementById('historyDetailContent');
+                
+                // Parse data as JSON if available
+                let dataHtml = '';
+                if (history.data) {
+                    try {
+                        const parsedData = JSON.parse(history.data);
+                        dataHtml = `
+                            <h3>데이터 (JSON)</h3>
+                            <div class="json-viewer">${JSON.stringify(parsedData, null, 2)}</div>
+                            
+                            <h3 style="margin-top: 1.5rem;">데이터 (리스트 형태)</h3>
+                            <div class="detail-grid">
+                                ${Object.entries(parsedData).map(([key, value]) => `
+                                    <div class="detail-item">
+                                        <label>${key}</label>
+                                        <div class="value">${typeof value === 'object' ? JSON.stringify(value) : value}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } catch (e) {
+                        dataHtml = `
+                            <h3>데이터 (텍스트)</h3>
+                            <div class="detail-item">
+                                <div class="value">${history.data}</div>
+                            </div>
+                        `;
+                    }
+                }
+
+                content.innerHTML = `
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>히스토리 ID</label>
+                            <div class="value">${history.id}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>사용자 ID</label>
+                            <div class="value">${history.userId || '-'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>액션</label>
+                            <div class="value">${history.action}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>IP 주소</label>
+                            <div class="value">${history.ipAddress || '-'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>User Agent</label>
+                            <div class="value" style="word-break: break-all;">${history.userAgent || '-'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label>일시</label>
+                            <div class="value">${new Date(history.createdAt).toLocaleString('ko-KR')}</div>
+                        </div>
+                    </div>
+
+                    ${dataHtml}
+                `;
+                openModal('historyModal');
+            })
+            .catch(error => {
+                console.error('Failed to load history detail:', error);
+                alert('히스토리 정보를 불러오는데 실패했습니다.');
+            });
+        }
+
+        // Update pagination
+        function updatePagination(elementId, currentPage, totalPages, callback) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            if (currentPage > 0) {
+                const prevBtn = document.createElement('button');
+                prevBtn.textContent = '이전';
+                prevBtn.onclick = () => callback(currentPage - 1);
+                container.appendChild(prevBtn);
+            }
+
+            // Page numbers
+            const startPage = Math.max(0, currentPage - 2);
+            const endPage = Math.min(totalPages - 1, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i + 1;
+                btn.className = i === currentPage ? 'active' : '';
+                btn.onclick = () => callback(i);
+                container.appendChild(btn);
+            }
+
+            // Next button
+            if (currentPage < totalPages - 1) {
+                const nextBtn = document.createElement('button');
+                nextBtn.textContent = '다음';
+                nextBtn.onclick = () => callback(currentPage + 1);
+                container.appendChild(nextBtn);
+            }
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminUser');
+                localStorage.removeItem('adminUserId');
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        // Load initial data
+        loadUsers(0);
+    </script>
+</body>
+</html>
