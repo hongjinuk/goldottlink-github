@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>릴리스 노트 - goldottlink</title>
+    <meta name="description" content="goldottlink의 최신 업데이트 및 변경 사항을 확인하세요.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        .release-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .release-item {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .release-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .release-version {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .release-date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        .release-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .badge-latest {
+            background: #27ae60;
+            color: white;
+        }
+        .badge-stable {
+            background: #3498db;
+            color: white;
+        }
+        .badge-beta {
+            background: #f39c12;
+            color: white;
+        }
+        .release-section {
+            margin: 1.5rem 0;
+        }
+        .release-section h3 {
+            color: #34495e;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .release-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .release-section li {
+            padding: 0.5rem 0 0.5rem 2rem;
+            position: relative;
+            line-height: 1.6;
+        }
+        .release-section li:before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        .tag-new {
+            background: #27ae60;
+            color: white;
+        }
+        .tag-improvement {
+            background: #3498db;
+            color: white;
+        }
+        .tag-fix {
+            background: #e74c3c;
+            color: white;
+        }
+        .tag-security {
+            background: #e67e22;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .release-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .release-date {
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="features.html">기능</a></li>
+                <li><a href="guide.html">가이드</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">문의</a></li>
+                <li><a href="login.html" class="btn-login">로그인</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero-section">
+            <h1>📋 릴리스 노트</h1>
+            <p>goldottlink의 최신 업데이트 및 변경 사항</p>
+        </section>
+
+        <div class="release-content">
+            <!-- Version 1.2.0 -->
+            <div class="release-item">
+                <div class="release-header">
+                    <div>
+                        <span class="release-version">v1.2.0</span>
+                        <span class="release-badge badge-latest">최신</span>
+                        <span class="release-badge badge-stable">안정</span>
+                    </div>
+                    <span class="release-date">2026-02-17</span>
+                </div>
+
+                <div class="release-section">
+                    <h3>🎉 새로운 기능</h3>
+                    <ul>
+                        <li><span class="tag tag-new">NEW</span> 토큰 갱신 API 추가 - JWT 리프레시 토큰 지원</li>
+                        <li><span class="tag tag-new">NEW</span> 개인정보 처리방침 웹 페이지 추가</li>
+                        <li><span class="tag tag-new">NEW</span> 서비스 이용약관 웹 페이지 추가</li>
+                        <li><span class="tag tag-new">NEW</span> 차트 및 그래프 대시보드 (Chart.js 통합)</li>
+                    </ul>
+                </div>
+
+                <div class="release-section">
+                    <h3>⚡ 개선사항</h3>
+                    <ul>
+                        <li><span class="tag tag-improvement">개선</span> SEO 최적화 - 메타 태그 및 Open Graph 태그 개선</li>
+                        <li><span class="tag tag-improvement">개선</span> sitemap.xml 업데이트 - 모든 페이지 포함</li>
+                        <li><span class="tag tag-improvement">개선</span> robots.txt 설정 최적화</li>
+                        <li><span class="tag tag-improvement">개선</span> 대시보드 UI/UX 개선</li>
+                    </ul>
+                </div>
+
+                <div class="release-section">
+                    <h3>🔧 버그 수정</h3>
+                    <ul>
+                        <li><span class="tag tag-fix">수정</span> 링크 삭제 시 발생하는 오류 해결</li>
+                        <li><span class="tag tag-fix">수정</span> 모바일 메뉴 토글 문제 해결</li>
+                    </ul>
+                </div>
+
+                <div class="release-section">
+                    <h3>🔒 보안</h3>
+                    <ul>
+                        <li><span class="tag tag-security">보안</span> 리프레시 토큰 보안 강화</li>
+                        <li><span class="tag tag-security">보안</span> 비밀번호 해싱 알고리즘 업그레이드 (BCrypt)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Version 1.1.0 -->
+            <div class="release-item">
+                <div class="release-header">
+                    <div>
+                        <span class="release-version">v1.1.0</span>
+                        <span class="release-badge badge-stable">안정</span>
+                    </div>
+                    <span class="release-date">2026-02-15</span>
+                </div>
+
+                <div class="release-section">
+                    <h3>🎉 새로운 기능</h3>
+                    <ul>
+                        <li><span class="tag tag-new">NEW</span> Android 네이티브 앱 출시</li>
+                        <li><span class="tag tag-new">NEW</span> 타임스탬프 표시/숨김 설정 추가</li>
+                        <li><span class="tag tag-new">NEW</span> Topic 및 Collection 실시간 동기화</li>
+                        <li><span class="tag tag-new">NEW</span> 다크 모드 지원</li>
+                        <li><span class="tag tag-new">NEW</span> 폴더 색상 및 아이콘 커스터마이징</li>
+                    </ul>
+                </div>
+
+                <div class="release-section">
+                    <h3>⚡ 개선사항</h3>
+                    <ul>
+                        <li><span class="tag tag-improvement">개선</span> MVVM 아키텍처 적용으로 코드 품질 향상</li>
+                        <li><span class="tag tag-improvement">개선</span> Room Database 마이그레이션 지원</li>
+                        <li><span class="tag tag-improvement">개선</span> Material Design 3 컴포넌트 적용</li>
+                        <li><span class="tag tag-improvement">개선</span> 반응형 UI 레이아웃</li>
+                    </ul>
+                </div>
+
+                <div class="release-section">
+                    <h3>🔒 보안</h3>
+                    <ul>
+                        <li><span class="tag tag-security">보안</span> EncryptedSharedPreferences 적용</li>
+                        <li><span class="tag tag-security">보안</span> HTTPS 통신 강제</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Version 1.0.0 -->
+            <div class="release-item">
+                <div class="release-header">
+                    <div>
+                        <span class="release-version">v1.0.0</span>
+                        <span class="release-badge badge-stable">안정</span>
+                    </div>
+                    <span class="release-date">2026-02-14</span>
+                </div>
+
+                <div class="release-section">
+                    <h3>🎉 초기 릴리스</h3>
+                    <ul>
+                        <li><span class="tag tag-new">NEW</span> OTT 링크 관리 기능</li>
+                        <li><span class="tag tag-new">NEW</span> 폴더 및 태그 시스템</li>
+                        <li><span class="tag tag-new">NEW</span> 클라우드 백업 및 복원</li>
+                        <li><span class="tag tag-new">NEW</span> 로컬 모드 지원 (오프라인 사용)</li>
+                        <li><span class="tag tag-new">NEW</span> Flutter 앱 출시</li>
+                        <li><span class="tag tag-new">NEW</span> 웹 애플리케이션 출시</li>
+                        <li><span class="tag tag-new">NEW</span> RESTful API 서버</li>
+                        <li><span class="tag tag-new">NEW</span> JWT 기반 인증 시스템</li>
+                        <li><span class="tag tag-new">NEW</span> 10개 이상 OTT 플랫폼 지원</li>
+                    </ul>
+                </div>
+
+                <div class="release-section">
+                    <h3>📚 지원 플랫폼</h3>
+                    <ul>
+                        <li>YouTube, Netflix, Disney+</li>
+                        <li>Amazon Prime Video, Apple TV+</li>
+                        <li>Coupang Play, Wavve, Tving</li>
+                        <li>Watcha, Vimeo</li>
+                        <li>사용자 정의 플랫폼</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Beta Version 0.9.0 -->
+            <div class="release-item">
+                <div class="release-header">
+                    <div>
+                        <span class="release-version">v0.9.0 Beta</span>
+                        <span class="release-badge badge-beta">베타</span>
+                    </div>
+                    <span class="release-date">2026-02-10</span>
+                </div>
+
+                <div class="release-section">
+                    <h3>🧪 베타 테스트</h3>
+                    <ul>
+                        <li>초기 베타 테스터를 위한 릴리스</li>
+                        <li>핵심 기능 테스트 완료</li>
+                        <li>버그 리포트 수집</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <section class="hero-section" style="margin-top: 3rem;">
+            <h2>📬 업데이트 구독</h2>
+            <p>최신 업데이트 소식을 이메일로 받아보세요</p>
+            <a href="contact.html" class="btn" style="margin-top: 1rem; display: inline-block;">구독하기</a>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 goldottlink. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy-policy.html">개인정보처리방침</a>
+                <a href="terms-of-service.html">이용약관</a>
+                <a href="contact.html">문의하기</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

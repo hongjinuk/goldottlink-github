@@ -18,26 +18,26 @@
             <h1 class="logo">🔗 goldottlink</h1>
             <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html">홈</a></li>
-                <li><a href="features.html">기능</a></li>
-                <li><a href="guide.html">가이드</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="contact.html">문의</a></li>
-                <li><a href="login.html" class="btn-login active">로그인</a></li>
+                <li><a href="index.html" data-i18n="nav.home">홈</a></li>
+                <li><a href="features.html" data-i18n="nav.features">기능</a></li>
+                <li><a href="guide.html" data-i18n="nav.guide">가이드</a></li>
+                <li><a href="faq.html" data-i18n="nav.faq">FAQ</a></li>
+                <li><a href="contact.html" data-i18n="nav.contact">문의</a></li>
+                <li><a href="login.html" class="btn-login active" data-i18n="nav.login">로그인</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="container">
         <div class="form-container">
-            <h2 style="text-align: center;">🔗 로그인</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+            <h2 style="text-align: center;" data-i18n="login.title">🔗 로그인</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;" data-i18n="login.subtitle">
                 goldottlink 계정으로 로그인하세요
             </p>
 
             <!-- 소셜 로그인 버튼 -->
             <div class="social-login-section">
-                <button type="button" class="btn-social btn-google" onclick="loginWithGoogle()">
+                <button type="button" class="btn-social btn-google" onclick="loginWithGoogle()" data-i18n="login.google">
                     <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right: 10px;">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -47,7 +47,7 @@
                     Google로 로그인
                 </button>
                 
-                <button type="button" class="btn-social btn-facebook" onclick="loginWithFacebook()">
+                <button type="button" class="btn-social btn-facebook" onclick="loginWithFacebook()" data-i18n="login.facebook">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="margin-right: 10px;">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                     </svg>
@@ -56,76 +56,76 @@
             </div>
 
             <div class="divider">
-                <span>또는</span>
+                <span data-i18n="login.divider">또는</span>
             </div>
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input type="email" id="email" name="email" required placeholder="example@email.com">
+                    <label for="email" data-i18n="login.email.label">이메일</label>
+                    <input type="email" id="email" name="email" required placeholder="example@email.com" data-i18n-placeholder="login.email.label">
                 </div>
 
                 <div class="form-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" id="password" name="password" required placeholder="비밀번호를 입력하세요">
+                    <label for="password" data-i18n="login.password.label">비밀번호</label>
+                    <input type="password" id="password" name="password" required placeholder="비밀번호를 입력하세요" data-i18n-placeholder="login.password.label">
                 </div>
 
                 <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
                     <input type="checkbox" id="remember" name="remember" style="width: auto;">
-                    <label for="remember" style="margin: 0;">로그인 상태 유지</label>
+                    <label for="remember" style="margin: 0;" data-i18n="login.remember">로그인 상태 유지</label>
                 </div>
 
-                <button type="submit" class="btn-submit">로그인</button>
+                <button type="submit" class="btn-submit" data-i18n="login.submit">로그인</button>
             </form>
 
             <div style="text-align: center; margin-top: 1.5rem;">
-                <a href="#" style="color: #667eea; text-decoration: none;">비밀번호를 잊으셨나요?</a>
+                <a href="#" style="color: #667eea; text-decoration: none;" data-i18n="login.forgot">비밀번호를 잊으셨나요?</a>
             </div>
 
             <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
 
             <p style="text-align: center; color: #666;">
-                계정이 없으신가요? <a href="register.html" style="color: #667eea; text-decoration: none; font-weight: bold;">회원가입</a>
+                <span data-i18n="login.noaccount">계정이 없으신가요?</span> <a href="register.html" style="color: #667eea; text-decoration: none; font-weight: bold;" data-i18n="login.register">회원가입</a>
             </p>
 
             <p style="text-align: center; margin-top: 1rem;">
-                <a href="app.html?mode=local" style="color: #48bb78; text-decoration: none; font-weight: bold;">
+                <a href="app.html?mode=local" style="color: #48bb78; text-decoration: none; font-weight: bold;" data-i18n="login.localmode">
                     🔓 로컬 모드로 사용하기
                 </a>
             </p>
         </div>
 
         <section class="info-section">
-            <h2 style="text-align: center; margin-bottom: 2rem;">계정의 장점</h2>
+            <h2 style="text-align: center; margin-bottom: 2rem;" data-i18n="login.benefits.title">계정의 장점</h2>
             
             <div class="features">
                 <div class="feature-card">
                     <div class="feature-icon">☁️</div>
-                    <h3>클라우드 동기화</h3>
-                    <p>여러 기기에서 데이터를 자동으로 동기화합니다</p>
+                    <h3 data-i18n="login.benefits.sync.title">클라우드 동기화</h3>
+                    <p data-i18n="login.benefits.sync.desc">여러 기기에서 데이터를 자동으로 동기화합니다</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">💾</div>
-                    <h3>자동 백업</h3>
-                    <p>데이터를 클라우드에 안전하게 백업합니다</p>
+                    <h3 data-i18n="login.benefits.backup.title">자동 백업</h3>
+                    <p data-i18n="login.benefits.backup.desc">데이터를 클라우드에 안전하게 백업합니다</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🔒</div>
-                    <h3>보안 강화</h3>
-                    <p>계정 기반 보안으로 데이터를 보호합니다</p>
+                    <h3 data-i18n="login.benefits.security.title">보안 강화</h3>
+                    <p data-i18n="login.benefits.security.desc">계정 기반 보안으로 데이터를 보호합니다</p>
                 </div>
             </div>
         </section>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
+        <p data-i18n="footer.copyright">&copy; 2026 goldottlink. Made with ❤️ by AI-Work-Project Team</p>
         <p>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">이용약관</a>
-            <a href="contact.html">문의하기</a>
+            <a href="#" data-i18n="footer.privacy">개인정보처리방침</a>
+            <a href="#" data-i18n="footer.terms">이용약관</a>
+            <a href="contact.html" data-i18n="footer.contact">문의하기</a>
         </p>
     </footer>
 
@@ -371,5 +371,7 @@
             font-size: 0.9rem;
         }
     </style>
+
+    <script src="language-switcher.js"></script>
 </body>
 </html>

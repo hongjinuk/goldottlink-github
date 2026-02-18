@@ -60,4 +60,60 @@
         <priority>0.5</priority>
     </url>
     
+    <!-- Privacy Policy -->
+    <url>
+        <loc>https://goldottlink.com/privacy-policy.html</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>quarterly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Terms of Service -->
+    <url>
+        <loc>https://goldottlink.com/terms-of-service.html</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>quarterly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Release Notes -->
+    <url>
+        <loc>https://goldottlink.com/release-notes.html</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- API Documentation -->
+    <url>
+        <loc>https://goldottlink.com/api-docs.html</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Dashboard -->
+    <url>
+        <loc>https://goldottlink.com/dashboard.html</loc>
+        <lastmod>2026-02-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Viewer -->
+    <url>
+        <loc>https://goldottlink.com/viewer.html</loc>
+        <lastmod>2026-02-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Admin Login -->
+    <url>
+        <loc>https://goldottlink.com/admin-login.html</loc>
+        <lastmod>2026-02-15</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
 </urlset>

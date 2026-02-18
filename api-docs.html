@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 문서 - goldottlink</title>
+    <meta name="description" content="goldottlink REST API 문서 - 인증, 링크 관리, 폴더 관리 등 모든 API 엔드포인트 설명">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        .api-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .api-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .api-section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .method-get { background: #27ae60; color: white; }
+        .method-post { background: #3498db; color: white; }
+        .method-put { background: #f39c12; color: white; }
+        .method-delete { background: #e74c3c; color: white; }
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .endpoint-description {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        .params, .response {
+            margin: 1rem 0;
+        }
+        .params h4, .response h4 {
+            color: #34495e;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+        .param-table th,
+        .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .param-table th {
+            background: #ecf0f1;
+            font-weight: 600;
+        }
+        .param-type {
+            color: #3498db;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        .required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .base-url {
+            background: #ecf0f1;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-family: 'Courier New', monospace;
+        }
+        .auth-note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+        .toc li {
+            padding: 0.25rem 0;
+        }
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <h1 class="logo">🔗 goldottlink</h1>
+            <button class="menu-toggle" id="menuToggle" aria-label="메뉴">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="features.html">기능</a></li>
+                <li><a href="guide.html">가이드</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">문의</a></li>
+                <li><a href="login.html" class="btn-login">로그인</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero-section">
+            <h1>📚 API 문서</h1>
+            <p>goldottlink REST API 엔드포인트 및 사용 방법</p>
+        </section>
+
+        <div class="api-content">
+            <!-- Base URL -->
+            <div class="base-url">
+                <strong>Base URL:</strong> https://api.goldottlink.com<br>
+                <strong>Version:</strong> v1.2.0<br>
+                <strong>Content-Type:</strong> application/json
+            </div>
+
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>📋 목차</h3>
+                <ul>
+                    <li><a href="#authentication">인증 (Authentication)</a></li>
+                    <li><a href="#links">링크 관리 (Links)</a></li>
+                    <li><a href="#folders">폴더 관리 (Folders)</a></li>
+                    <li><a href="#profile">프로필 (Profile)</a></li>
+                    <li><a href="#backup">백업 (Backup)</a></li>
+                    <li><a href="#errors">에러 코드</a></li>
+                </ul>
+            </div>
+
+            <!-- Authentication Section -->
+            <div class="api-section" id="authentication">
+                <h2>🔐 인증 (Authentication)</h2>
+                
+                <div class="auth-note">
+                    <strong>⚠️ 인증 필요:</strong> 대부분의 API는 JWT 토큰을 요구합니다. 
+                    헤더에 <code>Authorization: Bearer {token}</code>을 포함해야 합니다.
+                </div>
+
+                <!-- Register -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/api/auth/register</span>
+                    </div>
+                    <p class="endpoint-description">새로운 사용자 계정을 생성합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Request Body:</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>사용자 이메일 주소</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>비밀번호 (최소 8자)</td>
+                                </tr>
+                                <tr>
+                                    <td>displayName</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>표시될 이름</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="response">
+                        <h4>Response (200 OK):</h4>
+                        <pre class="code-block">{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "email": "user@example.com",
+    "username": "사용자"
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Login -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/api/auth/login</span>
+                    </div>
+                    <p class="endpoint-description">기존 사용자로 로그인합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Request Body:</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>사용자 이메일</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>비밀번호</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="response">
+                        <h4>Response (200 OK):</h4>
+                        <pre class="code-block">{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "email": "user@example.com",
+    "username": "사용자"
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Refresh Token -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/api/auth/refresh</span>
+                    </div>
+                    <p class="endpoint-description">만료된 액세스 토큰을 갱신합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Request Body:</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>refreshToken</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>리프레시 토큰</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="response">
+                        <h4>Response (200 OK):</h4>
+                        <pre class="code-block">{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "email": "user@example.com",
+    "username": "사용자"
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Logout -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/api/auth/logout</span>
+                    </div>
+                    <p class="endpoint-description">현재 세션을 종료합니다.</p>
+                    
+                    <div class="response">
+                        <h4>Response (200 OK):</h4>
+                        <pre class="code-block">{
+  "message": "Logged out successfully"
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Links Section -->
+            <div class="api-section" id="links">
+                <h2>🔗 링크 관리 (Links)</h2>
+
+                <!-- Get Links -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-get">GET</span>
+                        <span class="endpoint-path">/api/links</span>
+                    </div>
+                    <p class="endpoint-description">사용자의 모든 링크를 조회합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Headers:</h4>
+                        <table class="param-table">
+                            <tbody>
+                                <tr>
+                                    <td>Authorization</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>Bearer {token}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="response">
+                        <h4>Response (200 OK):</h4>
+                        <pre class="code-block">[
+  {
+    "id": 1,
+    "url": "https://youtube.com/watch?v=...",
+    "title": "영상 제목",
+    "platform": "YouTube",
+    "thumbnailUrl": "https://...",
+    "createdAt": "2026-02-17T10:00:00Z"
+  }
+]</pre>
+                    </div>
+                </div>
+
+                <!-- Create Link -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/api/links</span>
+                    </div>
+                    <p class="endpoint-description">새로운 링크를 추가합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Request Body:</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>OTT 링크 URL</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="response">
+                        <h4>Response (200 OK):</h4>
+                        <pre class="code-block">{
+  "id": 1,
+  "url": "https://youtube.com/watch?v=...",
+  "title": "영상 제목",
+  "platform": "YouTube",
+  "thumbnailUrl": "https://...",
+  "createdAt": "2026-02-17T10:00:00Z"
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Update Link -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-put">PUT</span>
+                        <span class="endpoint-path">/api/links/:id</span>
+                    </div>
+                    <p class="endpoint-description">기존 링크를 수정합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Request Body:</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>title</td>
+                                    <td class="param-type">string</td>
+                                    <td>No</td>
+                                    <td>링크 제목</td>
+                                </tr>
+                                <tr>
+                                    <td>note</td>
+                                    <td class="param-type">string</td>
+                                    <td>No</td>
+                                    <td>메모</td>
+                                </tr>
+                                <tr>
+                                    <td>folderId</td>
+                                    <td class="param-type">number</td>
+                                    <td>No</td>
+                                    <td>폴더 ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Delete Link -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-delete">DELETE</span>
+                        <span class="endpoint-path">/api/links/:id</span>
+                    </div>
+                    <p class="endpoint-description">링크를 삭제합니다.</p>
+                    
+                    <div class="response">
+                        <h4>Response (200 OK):</h4>
+                        <pre class="code-block">{
+  "message": "Link deleted successfully"
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folders Section -->
+            <div class="api-section" id="folders">
+                <h2>📁 폴더 관리 (Folders)</h2>
+
+                <!-- Get Folders -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-get">GET</span>
+                        <span class="endpoint-path">/api/folders</span>
+                    </div>
+                    <p class="endpoint-description">사용자의 모든 폴더를 조회합니다.</p>
+                </div>
+
+                <!-- Create Folder -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/api/folders</span>
+                    </div>
+                    <p class="endpoint-description">새로운 폴더를 생성합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Request Body:</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>name</td>
+                                    <td class="param-type">string</td>
+                                    <td class="required">Yes</td>
+                                    <td>폴더 이름</td>
+                                </tr>
+                                <tr>
+                                    <td>color</td>
+                                    <td class="param-type">string</td>
+                                    <td>No</td>
+                                    <td>폴더 색상 (hex)</td>
+                                </tr>
+                                <tr>
+                                    <td>icon</td>
+                                    <td class="param-type">string</td>
+                                    <td>No</td>
+                                    <td>폴더 아이콘</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Update Folder -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-put">PUT</span>
+                        <span class="endpoint-path">/api/folders/:id</span>
+                    </div>
+                    <p class="endpoint-description">폴더 정보를 수정합니다.</p>
+                </div>
+
+                <!-- Delete Folder -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-delete">DELETE</span>
+                        <span class="endpoint-path">/api/folders/:id</span>
+                    </div>
+                    <p class="endpoint-description">폴더를 삭제합니다.</p>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="api-section" id="profile">
+                <h2>👤 프로필 (Profile)</h2>
+
+                <!-- Get Profile -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-get">GET</span>
+                        <span class="endpoint-path">/api/profile</span>
+                    </div>
+                    <p class="endpoint-description">현재 사용자의 프로필 정보를 조회합니다.</p>
+                </div>
+
+                <!-- Update Profile -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-put">PUT</span>
+                        <span class="endpoint-path">/api/profile</span>
+                    </div>
+                    <p class="endpoint-description">프로필 정보를 수정합니다.</p>
+                    
+                    <div class="params">
+                        <h4>Request Body:</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>username</td>
+                                    <td class="param-type">string</td>
+                                    <td>No</td>
+                                    <td>표시 이름</td>
+                                </tr>
+                                <tr>
+                                    <td>profilePictureUrl</td>
+                                    <td class="param-type">string</td>
+                                    <td>No</td>
+                                    <td>프로필 사진 URL</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup Section -->
+            <div class="api-section" id="backup">
+                <h2>☁️ 백업 (Backup)</h2>
+
+                <!-- Create Backup -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/api/backup/create</span>
+                    </div>
+                    <p class="endpoint-description">현재 데이터의 백업을 생성합니다.</p>
+                </div>
+
+                <!-- Get Backups -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-get">GET</span>
+                        <span class="endpoint-path">/api/backup</span>
+                    </div>
+                    <p class="endpoint-description">사용 가능한 백업 목록을 조회합니다.</p>
+                </div>
+            </div>
+
+            <!-- Error Codes Section -->
+            <div class="api-section" id="errors">
+                <h2>⚠️ 에러 코드</h2>
+                
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Status Code</th>
+                            <th>Description</th>
+                            <th>Example Response</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>400</td>
+                            <td>Bad Request</td>
+                            <td><code>{ "error": "Invalid input" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>401</td>
+                            <td>Unauthorized</td>
+                            <td><code>{ "error": "Invalid token" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>403</td>
+                            <td>Forbidden</td>
+                            <td><code>{ "error": "Access denied" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>404</td>
+                            <td>Not Found</td>
+                            <td><code>{ "error": "Resource not found" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>429</td>
+                            <td>Too Many Requests</td>
+                            <td><code>{ "error": "Rate limit exceeded" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>500</td>
+                            <td>Internal Server Error</td>
+                            <td><code>{ "error": "Server error" }</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 goldottlink. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy-policy.html">개인정보처리방침</a>
+                <a href="terms-of-service.html">이용약관</a>
+                <a href="contact.html">문의하기</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Smooth scroll to sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
